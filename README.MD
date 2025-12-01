@@ -1,90 +1,267 @@
-## README_EN.MD
-- [English](README_EN.MD)
+# 线上UI自动化巡检项目
 
-## 项目名称
-线上UI自动化巡检项目
+[English Version](README_EN.MD)
 
-## 简介
+## 目录
+- [项目简介](#项目简介)
+- [功能特性](#功能特性)
+- [演示地址](#演示地址)
+- [致谢](#致谢)
+- [技术架构](#技术架构)
+- [快速开始](#快速开始)
+  - [环境要求](#环境要求)
+  - [Docker部署](#docker部署)
+  - [本地开发部署](#本地开发部署)
+- [使用指南](#使用指南)
+  - [添加巡检用例](#添加巡检用例)
+  - [配置告警通知](#配置告警通知)
+  - [查看巡检结果](#查看巡检结果)
+- [巡检规则](#巡检规则)
+- [项目结构](#项目结构)
+- [常见问题](#常见问题)
+- [贡献指南](#贡献指南)
+- [联系方式](#联系方式)
+- [许可证](#许可证)
+
+## 项目简介
+
 本项目是一个线上UI自动化巡检工具，旨在帮助开发人员和测试人员快速、高效地检测线上Web应用的UI界面是否存在异常。通过自动化巡检，可以及时发现并修复潜在的问题，提升用户体验和产品质量。
 
-## 共享巡检资源
+该项目利用Playwright自动化测试框架，定期访问配置的网页URL，检查页面是否正常加载，并进行像素级别的页面对比，确保线上页面与基准图片保持一致。
+
+## 功能特性
+
+- 🤖 **自动化巡检**：定时执行巡检任务，无需人工干预
+- 🔍 **多种检测方式**：
+  - 页面可用性检测（白屏检测）
+  - 页面像素级别对比（视觉回归测试）
+  - 页面标题验证
+- 📊 **实时结果展示**：可视化展示巡检结果，包含详细统计数据
+- 🚨 **即时告警通知**：支持钉钉、企业微信、飞书等多种通知方式
+- 🖼️ **截图对比**：自动保存问题页面截图，便于问题分析
+- ⚙️ **灵活配置**：支持自定义巡检频率、告警阈值等参数
+- 📱 **响应式界面**：基于Vue3构建的现代化前端界面
+
+## 演示地址
+
 - 地址1： https://check.itest.ren/ @zdx0122
 - 地址2： https://check.aolifu.org/ @Oliverwqcwrw
-- 
-- 欢迎各位开发者提供已部署的项目供大家访问使用，共享巡检资源
 
-## 功能特点
-- 自动化巡检：定时或实时执行巡检任务，无需人工干预。
-- 多种巡检规则：支持标题对比，页面视觉回归。
-- 实时反馈：巡检结果实时展示，包括问题截图、问题描述和定位信息。
-- 跨平台支持：支持主流浏览器和操作系统，满足不同环境需求。
-## 使用说明
-### 安装与部署
-- 克隆本项目至本地。
-- Docker部署，参考 doc/docker 部署手册.md
-- 本地启动
-  - 基础环境：nodejs、jdk1.8、maven
-  - mysql: 建表语句db/ddl.sql
-  - online-server springboot项目，安装依赖后，一键启动即可，访问地址：访问地址：http://127.0.0.1:9091/
-  - online-client vue项目，访问地址：http://127.0.0.1:5173/
-  ``` 
-  npm install    //安装依赖
-  npm run dev    // 启动
-  ```
-### 巡检用例录入
-- 点击左侧菜单“H5用例”
-- 点击“新增”按钮
-- 填写用例信息，包括H5页面标题、巡检URL地址、业务线、钉钉/企微/飞书告警群机器人的key值等
-- 提交
+欢迎各位开发者提供已部署的项目供大家访问使用，共享巡检资源。
 
-### 巡检规则
-- 每5分钟执行一次巡检任务
-- 巡检内容
-  - 页面可用性检测（白屏）
-  - 页面像素比对（相似度<60%）
-  - 用例执行时长统计
+## 致谢
 
+本项目被收录在阮一峰老师的《科技爱好者周刊》第324期：[http://www.ruanyifeng.com/blog/2024/11/weekly-issue-324.html](http://www.ruanyifeng.com/blog/2024/11/weekly-issue-324.html)
 
-### 巡检结果
-- 巡检结果将实时展示在指定页面中。
-- 菜单“巡检记录”，可以查看今日巡检记录。
-- 菜单“数据看板”，可以近一段时间用例执行数据。
+感谢TesterHome社区公众号的帮助推广：[https://mp.weixin.qq.com/s/994En7SFl2TqXBuGvA-WQw](https://mp.weixin.qq.com/s/994En7SFl2TqXBuGvA-WQw)
 
-### 异常用例告警
-- 页面标题比对错误，告警通知（需配置群机器人key）
-- 页面像素比对相似度<60%，告警通知（需配置群机器人key）
-## 技术栈
-- 编程语言：JAVA
-- 框架：SpringBoot
-- 自动化测试工具：playwright + testNg
-- 数据库：MySQL(5.7)
-- 前端技术：vue3
+感谢所有为项目贡献的开发者和使用者，以及提供演示环境的合作伙伴。
+
+## 技术架构
+
+| 组件 | 技术栈 |
+|------|--------|
+| 后端 | Java 8, Spring Boot 2.7.15, MyBatis |
+| 前端 | Vue 3, TypeScript, Ant Design Vue |
+| 自动化测试 | Playwright 1.11.0, TestNG |
+| 数据库 | MySQL 5.7+ |
+| 构建工具 | Maven, NPM |
+| 容器化 | Docker, Docker Compose |
+
+## 快速开始
+
+### 环境要求
+
+#### Docker部署方式
+- Docker 20.0+
+- Docker Compose 1.29+
+
+#### 本地开发部署方式
+- **node version >= 20.0.0**
+- JDK 1.8
+- Maven 3.6+
+- MySQL 5.7+
+
+### Docker部署
+
+1. 克隆项目代码：
+```bash
+git clone https://github.com/TheCoolQATeam/online-inspection-tracker.git
+cd online-inspection-tracker
+```
+
+2. 修改配置：
+编辑[docker/web/default.conf](docker/web/default.conf)文件，将`server_name 127.0.0.1`中的`127.0.0.1`替换为您的服务器IP。
+
+3. 启动服务：
+```bash
+cd docker
+docker-compose -f docker-compose-arm64.yml up
+```
+
+4. 访问应用：
+启动完成后，在浏览器中访问 `http://你的服务器IP:5173/`
+
+### 本地开发部署
+
+1. 克隆项目代码：
+```bash
+git clone https://github.com/TheCoolQATeam/online-inspection-tracker.git
+cd online-inspection-tracker
+```
+
+2. 初始化数据库：
+```bash
+# 创建数据库
+mysql -u root -p -e "CREATE DATABASE online_inspection_tracker;"
+
+# 执行DDL脚本创建表
+mysql -u root -p online_inspection_tracker < ../db/ddl.sql
+```
+
+3. 启动后端服务：
+```bash
+cd online-server
+# 修改application.yml中的数据库连接配置
+mvn spring-boot:run
+```
+
+4. 启动前端服务：
+```bash
+# node版本需要20.0.0以上
+cd online-client
+npm install
+npm run dev
+```
+
+5. 访问应用：
+- 后端API：http://127.0.0.1:9091/
+- 前端界面：http://127.0.0.1:5173/
+
+## 使用指南
+
+### 添加巡检用例
+
+1. 在左侧导航栏点击"H5用例"
+2. 点击"新增"按钮
+3. 填写以下信息：
+   - 页面标题：用于标识该巡检用例
+   - 巡检URL地址：需要检测的网页地址
+   - 业务线：用于分组管理
+   - 告警通知配置：配置钉钉/企业微信/飞书机器人key（可选）
+4. 点击提交
+
+### 配置告警通知
+
+项目支持三种通知方式：
+
+1. **钉钉机器人**：
+   - 在钉钉群中添加自定义机器人
+   - 获取Webhook地址中的access_token值
+   - 在用例配置中填写告警机器人key
+
+2. **企业微信机器人**：
+   - 在企业微信群中添加机器人
+   - 获取Webhook地址中的key值
+   - 在用例配置中填写告警机器人key
+
+3. **飞书机器人**：
+   - 在飞书群中添加Webhook机器人
+   - 获取Webhook地址中的token值
+   - 在用例配置中填写告警机器人key
+
+### 查看巡检结果
+
+1. **巡检记录**：
+   - 在左侧导航栏点击"巡检记录"
+   - 可查看当天所有用例的执行情况
+
+2. **数据看板**：
+   - 在左侧导航栏点击"数据看板"
+   - 可查看历史统计数据和趋势图表
+
+## 巡检规则
+
+系统默认每5分钟执行一次巡检任务，检测内容包括：
+
+1. **页面可用性检测**：
+   - 检查页面是否能正常访问
+   - 检测是否存在白屏现象
+
+2. **页面像素比对**：
+   - 对比当前页面与基准图片的相似度
+   - 当相似度低于60%时触发告警
+
+3. **用例执行时长统计**：
+   - 记录每次巡检的响应时间
+   - 用于性能监控和趋势分析
+
+## 项目结构
+
+```
+.
+├── db                    # 数据库脚本
+├── docker                # Docker配置文件
+├── docs                  # 文档资料
+├── online-client         # 前端Vue项目
+│   ├── src
+│   │   ├── api           # API接口封装
+│   │   ├── components    # 公共组件
+│   │   ├── views         # 页面视图
+│   │   └── ...
+│   └── ...
+├── online-server         # 后端Spring Boot项目
+│   ├── src
+│   │   ├── controller    # 控制器层
+│   │   ├── service       # 服务层
+│   │   ├── mapper        # 数据访问层
+│   │   └── ...
+│   └── ...
+└── ...
+```
+
+## 常见问题
+
+### 如何巡检需要登录的页面？
+
+开源前考虑过这个问题，卡点主要是在登录信息泄露的安全风险上，所以开源版本未做这个功能。
+但可以在内部团队自行实现，自行实现容易考虑好安全风险，更加可控、合规。
+
+自行实现是很简单的，主要原理是playwright支持浏览器上下文进行隔离测试，详情可参考：
+[Issue #3](https://github.com/TheCoolQATeam/online-inspection-tracker/issues/3)
+
 ## 贡献指南
-欢迎各位开发者贡献代码、文档和建议。在提交贡献之前，请遵循以下步骤：
 
-Fork本项目至你的GitHub仓库。
-在你的仓库中创建并切换到新的开发分支。
-进行代码修改、添加文档或提交其他贡献。
-提交你的更改并推送至你的GitHub仓库。
-发起Pull Request至本项目的主分支。
+欢迎各位开发者贡献代码、文档和建议！
+
+### 如何贡献
+
+1. Fork本项目至你的GitHub仓库
+2. 在你的仓库中创建并切换到新的开发分支
+3. 进行代码修改、添加文档或提交其他贡献
+4. 提交你的更改并推送至你的GitHub仓库
+5. 发起Pull Request至本项目的主分支
+
 我们将对提交的Pull Request进行审查和测试，一旦通过，将合并至主分支并发布新版本。
 
 ### 贡献巡检资源
-受机器资源限制，demo站点仅能使用少量URL供大家体验，欢迎各位开发者提供已部署的项目供大家访问使用，共享巡检资源
+
+受机器资源限制，demo站点仅能使用少量URL供大家体验，欢迎各位开发者提供已部署的项目供大家访问使用，共享巡检资源。
 
 ## 联系方式
+
 如有任何疑问、建议或需求，欢迎通过以下方式与我们联系：
 
 - GitHub仓库提交ISSUE
 - 邮箱：zdx0122@gmail.com
-- 微信号：zdx0122,请备注“开源巡检”
+- 微信号：zdx0122,请备注"开源巡检"
 - 微信群交流 
-  - 扫码加入 / 添加微信zdx0122拉群（请备注：巡检开源）
-  - ![微信群](https://img.1024996.xyz/wechatQR-20250208.png)
+  - 添加微信zdx0122拉群（请备注：巡检开源，进群）
 
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=TheCoolQATeam/online-inspection-tracker&type=Date)](https://star-history.com/#TheCoolQATeam/online-inspection-tracker&Date)
 
 ## 许可证
+
 本项目采用Apache许可证。在使用本项目时，请遵守相关许可协议。
